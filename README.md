@@ -38,15 +38,15 @@ python moin_index.py
 
 ```
 python moin_pull.py
-# stores files in ./raw_moin/
+# stores files in ./working/moin/
 ```
 
 ## Convert MoinMoin pages
 
 ```
 python moin_convert.py
-# stores intermediary files in ./mediawiki/
-# stores final version in ./commonmark/
+# stores intermediary files in ./working/mediawiki/
+# stores final version in ./working/commonmark/
 ```
 
 ## Copying

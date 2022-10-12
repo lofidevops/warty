@@ -43,7 +43,7 @@ def cm2moin_single_line(line, code_block) -> Tuple[str, bool]:
         if line.startswith("* "):  # lists must start with a space
             paragraph = " " + paragraph
 
-        all_links = re.findall(r"\[.*?\]\(.*?\)", line)  # find all [aaa](zzz)
+        all_links = re.findall(r"\[.*?]\(.*?\)", line)  # find all [aaa](zzz)
         for cm_link in all_links:
             name, target = cm_link[1:-1].split("](")
             moin_link = f"[[{target}|{name}]]"

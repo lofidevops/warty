@@ -36,9 +36,9 @@ def good_file(filepath):
 
 
 def convert(moin_path):
-    name = str(moin_path).replace("raw_moin/", "").replace(".moin", "")
-    mw_path = str(moin_path).replace("raw_moin", "mediawiki").replace(".moin", ".wiki")
-    cm_path = str(moin_path).replace("raw_moin", "commonmark").replace(".moin", ".md")
+    name = str(moin_path).replace("working/moin/", "").replace(".moin", "")
+    mw_path = str(moin_path).replace("moin", "mediawiki").replace(".moin", ".wiki")
+    cm_path = str(moin_path).replace("moin", "commonmark").replace(".moin", ".md")
     shutil.copy(moin_path, mw_path)
 
     sed("s/^ \*/*/g", mw_path)  # noqa
@@ -68,6 +68,6 @@ def convert(moin_path):
 
 if __name__ == "__main__":
 
-    for p in sorted(Path("./raw_moin").glob("*.moin")):
+    for p in sorted(Path("./working/moin").glob("*.moin")):
         if good_file(p):
             convert(p)

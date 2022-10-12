@@ -31,7 +31,7 @@ def invoke():
         filename = convert_link_to_filename(link, base_url)
         sleep(3)
         text = requests.get(f"{link}?action=raw", cookies=cookies).text
-        with open(f"./raw_moin/{filename}.moin", "w") as f:
+        with open(f"./working/moin/{filename}.moin", "w") as f:
             f.writelines(text)
 
 
