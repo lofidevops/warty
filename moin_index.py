@@ -27,8 +27,7 @@ def trim_at_first(character, text):
 
 
 def get_base_links(cookies, page_url, base_url) -> Set[str]:
-
-    links = set()
+    link_set = set()
     soup = get_soup(page_url, cookies)
     all_links = soup.find_all("a")
     for link in all_links:
@@ -36,13 +35,12 @@ def get_base_links(cookies, page_url, base_url) -> Set[str]:
         if link_url.startswith(base_url):
             link_url = trim_at_first("#", link_url)
             link_url = trim_at_first("?", link_url)
-            links.add(link_url)
+            link_set.add(link_url)
 
-    return links
+    return link_set
 
 
 def convert_link_to_filename(page_url, base_url):
-
     if not page_url.startswith(base_url):
         raise ValueError("Invalid link.")
 
@@ -54,25 +52,16 @@ def convert_link_to_filename(page_url, base_url):
 
 
 def invoke():
-
     # get environment variables
     load_dotenv()
+    index_url = os.getenv("MOIN_INDEX", "https://example.com")
     base_url = os.getenv("MOIN_BASE", "https://example.com")
     cookies = {"MOIN_SESSION_443_ROOT": os.getenv("MOIN_SESSION_443_ROOT", "NOT-DEFINED")}
 
-    # index all pages within two links
-    all_links = {base_url}
+    index_links = get_base_links(cookies, index_url, base_url)
 
-    index_links = get_base_links(cookies, base_url, base_url)
-
-    for link in index_links:
-        page_links = get_base_links(cookies, link, base_url)
-        all_links = all_links.union(page_links)
-
-    all_links = all_links.union(index_links)
-
-    with open("index.links", "w") as f:
-        f.writelines("\n".join(sorted(all_links)))
+    with open("working/index.links", "w") as f:
+        f.writelines("\n".join(sorted(index_links)))
 
 
 if __name__ == "__main__":

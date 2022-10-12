@@ -29,7 +29,7 @@ make run hello.py
   ```
   MOIN_SESSION_443_ROOT=abcdefghijklmnopqrstuvwxyz
   MOIN_BASE=https://wiki.ubuntu.com/BugSquad/KnowledgeBase
-  MOIN_TAIL=BugSquad/KnowledgeBase
+  MOIN_INDEX=https://wiki.ubuntu.com/BugSquad/KnowledgeBase/SubPages
   ```
 
 ### Create index
