@@ -4,9 +4,9 @@ from pathlib import Path
 import mdformat
 
 import sh
+from dotenv import load_dotenv
 
-MOIN_BASE = os.getenv("MOIN_BASE")
-MOIN_TAIL = os.getenv("MOIN_TAIL")  # find a better way to trim this
+MOIN_BASE = None
 
 
 def sed(pattern, filepath):
@@ -27,18 +27,21 @@ title: {title}
 
 
 def good_file(filepath):
+    bad_starts = ["<!DOCTYPE", "#REDIRECT"]
+
     with open(filepath, "r") as f:
         first_line = f.readlines()[0]
-        if first_line.startswith("<!DOCTYPE"):
-            return False
-        else:
-            return True
+        for bad in bad_starts:
+            if first_line.startswith(bad):
+                return False
+
+    return True
 
 
 def convert(moin_path):
     name = str(moin_path).replace("working/moin/", "").replace(".moin", "")
-    mw_path = str(moin_path).replace("moin", "mediawiki").replace(".moin", ".wiki")
-    cm_path = str(moin_path).replace("moin", "commonmark").replace(".moin", ".md")
+    mw_path = str(moin_path).replace("/moin", "/mediawiki").replace(".moin", ".wiki")
+    cm_path = str(moin_path).replace("/moin", "/commonmark").replace(".moin", ".md")
     shutil.copy(moin_path, mw_path)
 
     sed("s/^ \*/*/g", mw_path)  # noqa
@@ -60,13 +63,17 @@ def convert(moin_path):
         content = content.replace('\<\<TableOfContents()>>\n\n', '')  # noqa
         content = content.replace('\`', '`')  # noqa
         content = content.replace(f"{MOIN_BASE}/", "")
-        content = content.replace(f"{MOIN_TAIL}", "")
+        content = content.replace(f"{MOIN_SPECIAL}", "")
 
     with open(cm_path, "w") as f:
         f.write(content)
 
 
 if __name__ == "__main__":
+
+    load_dotenv()
+    MOIN_BASE = os.getenv("MOIN_BASE")
+    MOIN_SPECIAL = os.getenv("MOIN_SPECIAL")
 
     for p in sorted(Path("./working/moin").glob("*.moin")):
         if good_file(p):

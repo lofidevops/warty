@@ -50,8 +50,8 @@ make run moin_pull.py
 
 ```
 make run moin_convert.py
-# stores intermediary files in ./working/mediawiki/
-# stores final version in ./working/commonmark/
+cd working/commonmark
+./postprocessing.sh
 ```
 
 ## Copying
