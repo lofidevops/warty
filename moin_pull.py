@@ -22,7 +22,7 @@ def invoke():
     base_url = os.getenv("MOIN_BASE", "https://example.com")
     cookies = {"MOIN_SESSION_443_ROOT": os.getenv("MOIN_SESSION_443_ROOT", "NOT-DEFINED")}
 
-    with open("index.links", "r") as f:
+    with open("working/index.links", "r") as f:
         all_links = [link.strip() for link in f.readlines()]
 
     # get all raw moinmoin
