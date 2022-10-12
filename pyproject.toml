@@ -1,0 +1,24 @@
+[project]
+name = "warty"
+version = "0.1.0"
+description = "Experimental code."
+authors = [{ name = "Canonical", email = "no-reply@canonical.com" }]
+dependencies = [
+    "beautifulsoup4",
+    "mdformat",
+    "python-dotenv",
+    "requests",
+    "sh",
+]
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-or-later" }
+
+[project.optional-dependencies]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 88
+skip-magic-trailing-comma = true
