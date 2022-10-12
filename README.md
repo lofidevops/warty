@@ -4,12 +4,17 @@ Lower your expectations. Lower.
 
 ## Development environment
 
-- Initialise Python environment:
+Initialise Python environment:
 
-  ```
-  make bootstrap
-  .venv/bin/activate  # pick script for your shell
-  ```
+```
+make bootstrap
+```
+
+Run a Python script:
+
+```
+make run hello.py
+```
 
 ## MoinMoin conversion
 
@@ -30,21 +35,21 @@ Lower your expectations. Lower.
 ### Create index
 
 ```
-python moin_index.py
+make run moin_index.py
 # creates new file index.links
 ```
 
 ### Pull MoinMoin pages
 
 ```
-python moin_pull.py
+make run moin_pull.py
 # stores files in ./working/moin/
 ```
 
-## Convert MoinMoin pages
+### Convert MoinMoin pages
 
 ```
-python moin_convert.py
+make run moin_convert.py
 # stores intermediary files in ./working/mediawiki/
 # stores final version in ./working/commonmark/
 ```

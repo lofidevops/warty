@@ -1,3 +1,4 @@
+BOOT_TASKS = bootstrap pip-sync
 ENV = $(CURDIR)/.venv
 PYTHON3 = $(ENV)/bin/python3
 PIP = $(ENV)/bin/pip
@@ -20,10 +21,12 @@ $(ENV):
 pip-compile: $(ENV)
 	${PIP_COMPILE} -o requirements.txt pyproject.toml
 
-.PHONY: pip-sync
-pip-sync: $(ENV)
+## same action for bootstrap and pip-sync
+.PHONY: $(BOOT_TASKS)
+$(BOOT_TASKS): $(ENV)
 	${PIP_SYNC} requirements.txt
 
-.PHONY: bootstrap
-bootstrap: $(ENV)
-	${PIP_SYNC} requirements.txt
+## see https://stackoverflow.com/questions/6273608
+.PHONY: run
+run: $(ENV)
+	${PYTHON3} $(filter-out $@,$(MAKECMDGOALS))
