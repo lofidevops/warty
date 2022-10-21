@@ -5,6 +5,8 @@ description = "Experimental code."
 authors = [{ name = "Canonical", email = "no-reply@canonical.com" }]
 dependencies = [
     "beautifulsoup4",
+    "jira",
+    "launchpadlib",
     "mdformat",
     "python-dotenv",
     "requests",
