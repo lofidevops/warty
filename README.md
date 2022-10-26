@@ -1,6 +1,6 @@
 # Warty scripts 🐗
 
-Lower your expectations. Lower.
+Run at your peril!
 
 ## Development environment
 
@@ -56,6 +56,7 @@ cd working/commonmark
 
 ## Copying
 
+Warty scripts 🐗 \
 Copyright 2022 Canonical \
 SPDX-License-Identifier: GPL-3.0-or-later \
-Please observe the Ubuntu Code Of Conduct.
+Ubuntu Code of Conduct 2.0
