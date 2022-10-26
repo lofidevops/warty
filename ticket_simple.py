@@ -1,10 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+from github3 import login as github_login  # https://github3.readthedocs.io
 from jira import JIRA  # https://jira.readthedocs.io
 from launchpadlib.launchpad import Launchpad  # https://launchpadlib.readthedocs.io
-from github3 import login as github_login  # https://github3.readthedocs.io
-
-from dotenv import load_dotenv
 
 if __name__ == "__main__":
 
