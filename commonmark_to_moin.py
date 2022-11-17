@@ -50,9 +50,7 @@ def cm2moin_single_line(line, code_block) -> Tuple[str, bool]:
             paragraph = paragraph.replace(cm_link, moin_link)
 
         # fix hard links
-        paragraph = paragraph.replace(
-            f"{BASE_URL}", f"{SHORT_URL}"
-        )
+        paragraph = paragraph.replace(f"{BASE_URL}", f"{SHORT_URL}")
 
         return paragraph, False
 

@@ -5,10 +5,15 @@ description = "Experimental code."
 authors = [{ name = "Canonical", email = "no-reply@canonical.com" }]
 dependencies = [
     "beautifulsoup4",
+    "chevron",
+    "fabric",
     "github3.py",
+    "humanfriendly",  # see also: humanize
     "jira",
     "launchpadlib",
     "mdformat",
+    "paramiko==2.8.1",  # FIXME: avoid DSA/RSA confusion (TODO: get URL)
+    "pydantic",
     "python-dotenv",
     "requests",
     "sh",

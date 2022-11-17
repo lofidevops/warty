@@ -56,7 +56,9 @@ def invoke():
     load_dotenv()
     index_url = os.getenv("MOIN_INDEX", "https://example.com")
     base_url = os.getenv("MOIN_BASE", "https://example.com")
-    cookies = {"MOIN_SESSION_443_ROOT": os.getenv("MOIN_SESSION_443_ROOT", "NOT-DEFINED")}
+    cookies = {
+        "MOIN_SESSION_443_ROOT": os.getenv("MOIN_SESSION_443_ROOT", "NOT-DEFINED")
+    }
 
     index_links = get_base_links(cookies, index_url, base_url)
 

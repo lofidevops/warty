@@ -27,11 +27,20 @@ if __name__ == "__main__":
             if JIRA_BASE_URL not in gh_issue.body_text:
                 missing.add(gh_issue.html_url)
 
-    not_complete = ["New", "Incomplete", "Confirmed", "Triaged", "In Progress", "Fix Committed"]
+    not_complete = [
+        "New",
+        "Incomplete",
+        "Confirmed",
+        "Triaged",
+        "In Progress",
+        "Fix Committed",
+    ]
     # equivalent to lp_result.is_complete
 
-    launchpad = Launchpad.login_with('warty', 'production', version='devel')
-    lp_group = launchpad.project_groups[LAUNCHPAD_GROUP]  # https://launchpad.net/+apidoc/devel.html#project_group
+    launchpad = Launchpad.login_with("warty", "production", version="devel")
+    lp_group = launchpad.project_groups[
+        LAUNCHPAD_GROUP
+    ]  # https://launchpad.net/+apidoc/devel.html#project_group
     for lp_result in lp_group.searchTasks(status=not_complete):
         _bug = lp_result.bug  # https://launchpad.net/+apidoc/devel.html#bug
         if JIRA_BASE_URL not in _bug.description:

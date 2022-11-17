@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 @dataclass
 class Environment:
-
     def _yield_variables(self):
         for a in dir(self):
             if a[0] != "_" and a.isupper():

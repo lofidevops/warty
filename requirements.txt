@@ -4,30 +4,43 @@
 #
 #    pip-compile --output-file=requirements.txt pyproject.toml
 #
+bcrypt==4.0.1
+    # via paramiko
 beautifulsoup4==4.11.1
     # via warty (pyproject.toml)
 certifi==2022.9.24
     # via requests
 cffi==1.15.1
-    # via cryptography
+    # via
+    #   cryptography
+    #   pynacl
 charset-normalizer==2.1.1
     # via requests
+chevron==0.14.0
+    # via warty (pyproject.toml)
 cryptography==38.0.1
     # via
+    #   paramiko
     #   pyjwt
     #   secretstorage
 defusedxml==0.7.1
     # via jira
 distro==1.8.0
     # via lazr-restfulclient
+fabric==2.7.1
+    # via warty (pyproject.toml)
 github3-py==3.2.0
     # via warty (pyproject.toml)
 httplib2==0.20.4
     # via
     #   launchpadlib
     #   lazr-restfulclient
+humanfriendly==10.0
+    # via warty (pyproject.toml)
 idna==3.4
     # via requests
+invoke==1.7.3
+    # via fabric
 jaraco-classes==3.2.3
     # via keyring
 jeepney==0.8.0
@@ -60,10 +73,20 @@ oauthlib==3.2.2
     #   requests-oauthlib
 packaging==21.3
     # via jira
+paramiko==2.8.1
+    # via
+    #   fabric
+    #   warty (pyproject.toml)
+pathlib2==2.3.7.post1
+    # via fabric
 pycparser==2.21
     # via cffi
+pydantic==1.10.2
+    # via warty (pyproject.toml)
 pyjwt[crypto]==2.6.0
     # via github3-py
+pynacl==1.5.0
+    # via paramiko
 pyparsing==3.0.9
     # via
     #   httplib2
@@ -91,13 +114,16 @@ six==1.16.0
     # via
     #   launchpadlib
     #   lazr-restfulclient
+    #   pathlib2
     #   python-dateutil
 soupsieve==2.3.2.post1
     # via beautifulsoup4
 tomli==2.0.1
     # via mdformat
 typing-extensions==4.4.0
-    # via jira
+    # via
+    #   jira
+    #   pydantic
 uritemplate==4.1.1
     # via github3-py
 urllib3==1.26.12

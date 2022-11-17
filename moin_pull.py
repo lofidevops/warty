@@ -20,7 +20,9 @@ def invoke():
     # get environment variables
     load_dotenv()
     base_url = os.getenv("MOIN_BASE", "https://example.com")
-    cookies = {"MOIN_SESSION_443_ROOT": os.getenv("MOIN_SESSION_443_ROOT", "NOT-DEFINED")}
+    cookies = {
+        "MOIN_SESSION_443_ROOT": os.getenv("MOIN_SESSION_443_ROOT", "NOT-DEFINED")
+    }
 
     with open("working/index.links", "r") as f:
         all_links = [link.strip() for link in f.readlines()]

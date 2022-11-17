@@ -59,9 +59,9 @@ def convert(moin_path):
 
     with open(cm_path, "r") as f:
         content = frontmatter(name) + "".join(f.readlines())
-        content = content.replace(' "wikilink")', ')')
-        content = content.replace('\<\<TableOfContents()>>\n\n', '')  # noqa
-        content = content.replace('\`', '`')  # noqa
+        content = content.replace(' "wikilink")', ")")
+        content = content.replace("\<\<TableOfContents()>>\n\n", "")  # noqa
+        content = content.replace("\`", "`")  # noqa
         content = content.replace(f"{MOIN_BASE}/", "")
         content = content.replace(f"{MOIN_SPECIAL}", "")
 

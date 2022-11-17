@@ -16,11 +16,11 @@ if __name__ == "__main__":
     GITHUB_OWNER = os.getenv("GITHUB_OWNER")
 
     jira = JIRA(JIRA_BASE_URL, basic_auth=(CANONICAL_EMAIL, JIRA_API_TOKEN))
-    jira_result = jira.search_issues(f'project={JIRA_PROJECT_CODE}')
+    jira_result = jira.search_issues(f"project={JIRA_PROJECT_CODE}")
     for jira_issue in jira_result:
         print(jira_issue.key)
 
-    launchpad = Launchpad.login_with('warty', 'production', version='devel')
+    launchpad = Launchpad.login_with("warty", "production", version="devel")
 
     bug_one = launchpad.bugs[1]
     print(bug_one.title)
