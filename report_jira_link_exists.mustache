@@ -2,20 +2,21 @@
 <meta charset="UTF-8">
 <body>
 
-<h1>Open issues missing a Jira reference</h1>
+<h1>Open issues with a Jira reference</h1>
 
 <table style="width: 100%">
 
 {{#repositories}}
     <tr><td colspan="3"><br /><h2>{{title}} <a href="{{path}}" style="text-decoration: none;">{{icon}}</a></h2></td></tr>
 
-    {{#issues_youngest_first}}
+    {{#issues_with_jira_youngest_first}}
     <tr>
         <td><a href="{{path}}">{{number}}</a></td>
         <td>{{title}}</td>
+        <td>(<a href="{{jira_path}}">{{jira_number}}</a>)</td>
         <td>{{age}}</td>
     </tr>
-    {{/issues_youngest_first}}
+    {{/issues_with_jira_youngest_first}}
 
 {{/repositories}}
 </table>
