@@ -1,5 +1,6 @@
 """Generate a scary report of GH and LP tickets with no Jira references."""
 import datetime
+import fnmatch
 import logging
 import os
 from typing import List
@@ -17,9 +18,15 @@ from wartlib.remote import publish_report
 class ReportIssue(BaseModel):
     number: str
     path: str
+    summary: str
     title: str
     created: datetime.datetime
     jira: str = ""
+
+    def populate_jira(self):
+        matches = fnmatch.filter(self.summary.split(), JIRA_TEXT_FILTER)
+        if len(matches) != 0:
+            self.jira = matches[0]
 
     @property
     def age(self):
@@ -28,7 +35,7 @@ class ReportIssue(BaseModel):
 
     @property
     def jira_link(self):
-        return f"{JIRA_BASE_URL}/{self.jira}"
+        return f"{JIRA_BASE_URL}/{self.jira}" if self.jira != "" else ""
 
 
 class ReportRepository(BaseModel):
@@ -75,8 +82,10 @@ def repo_from_github(github_repo):
             number=str(issue.number),
             path=issue.html_url,
             title=issue.title,
+            summary=issue.body,
             created=issue.created_at,
         )
+        report_issue.populate_jira()
         report_repo.issues.append(report_issue)
 
     return report_repo
@@ -92,7 +101,7 @@ if __name__ == "__main__":
     GITHUB_TOPIC = os.getenv("GITHUB_TOPIC")
 
     JIRA_BASE_URL = os.getenv("JIRA_BASE_URL")
-    JIRA_PROJECT_CODE = os.getenv("JIRA_PROJECT_CODE")
+    JIRA_TEXT_FILTER = os.getenv("JIRA_PROJECT_CODE") + "-*"
 
     LAUNCHPAD_GROUP = os.getenv("LAUNCHPAD_GROUP")
 
