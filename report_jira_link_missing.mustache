@@ -4,20 +4,25 @@
 
 <h1>Open issues missing a Jira reference</h1>
 
+<p>
+These issues are missing a "{{jira_example}}" Jira reference.
+Ideally, the Jira ticket should link back to the issue.
+</p>
+
 <table style="width: 100%">
 
-{{#repositories}}
+    {{#repositories}}
     <tr><td colspan="3"><br /><h2>{{title}} <a href="{{path}}" style="text-decoration: none;">{{icon}}</a></h2></td></tr>
 
     {{#issues_without_jira_youngest_first}}
     <tr>
         <td><a href="{{path}}">{{number}}</a></td>
-        <td>{{title}}</td>
-        <td>{{age}}</td>
+        <td title="{{summary}}">{{title}}</td>
+        <td style="white-space: nowrap;">{{age}}</td>
     </tr>
     {{/issues_without_jira_youngest_first}}
+    {{/repositories}}
 
-{{/repositories}}
 </table>
 
 </body>

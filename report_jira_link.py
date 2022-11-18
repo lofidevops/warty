@@ -9,6 +9,7 @@ import humanfriendly
 from dateutil.tz import tzutc
 from dotenv import load_dotenv
 from github3 import login as github_login  # https://github3.readthedocs.io
+from jira import JIRA  # https://jira.readthedocs.io
 from launchpadlib.launchpad import Launchpad  # https://launchpadlib.readthedocs.io
 from pydantic import BaseModel
 
@@ -22,11 +23,13 @@ class ReportIssue(BaseModel):
     title: str
     created: datetime.datetime
     jira: str = ""
+    backlink: bool = False
 
     def populate_jira(self):
         matches = fnmatch.filter(self.summary.split(), JIRA_TEXT_FILTER)
         if len(matches) != 0:
             self.jira = matches[0]
+            self.backlink = check_jira_backlink(self.jira, self.path)
 
     @property
     def age(self):
@@ -34,8 +37,12 @@ class ReportIssue(BaseModel):
         return humanfriendly.format_timespan(delta.total_seconds(), max_units=1)
 
     @property
-    def jira_link(self):
-        return f"{JIRA_BASE_URL}/{self.jira}" if self.jira != "" else ""
+    def jira_path(self):
+        return f"{JIRA_BASE_URL}/browse/{self.jira}" if self.jira != "" else ""
+
+    @property
+    def jira_backlink_icon(self):
+        return "" if self.backlink else "😢"
 
 
 class ReportRepository(BaseModel):
@@ -82,7 +89,7 @@ def repo_from_github(github_repo):
             number=str(issue.number),
             path=issue.html_url,
             title=issue.title,
-            summary=issue.body,
+            summary=str(issue.body),
             created=issue.created_at,
         )
         report_issue.populate_jira()
@@ -91,17 +98,42 @@ def repo_from_github(github_repo):
     return report_repo
 
 
+def repo_from_launchpad(lp_target):
+    return ReportRepository(
+        host="launchpad", path=lp_target.web_link, title=lp_target.name
+    )
+
+
+def issue_from_launchpad(lp_bug):
+    return ReportIssue(
+        title=lp_bug.title,
+        number=str(lp_bug.id),
+        summary=lp_bug.description,
+        created=lp_bug.date_created,
+        path=lp_bug.web_link,
+    )
+
+
+def check_jira_backlink(jira_ref, source_link):
+    issue = jira.issue(jira_ref)
+    return source_link in issue.fields.description
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     load_dotenv()
+
+    CANONICAL_EMAIL = os.getenv("CANONICAL_EMAIL")
 
     GITHUB_EXTRAS = os.getenv("GITHUB_EXTRAS")
     GITHUB_OWNER = os.getenv("GITHUB_OWNER")
     GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
     GITHUB_TOPIC = os.getenv("GITHUB_TOPIC")
 
+    JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
     JIRA_BASE_URL = os.getenv("JIRA_BASE_URL")
     JIRA_TEXT_FILTER = os.getenv("JIRA_PROJECT_CODE") + "-*"
+    JIRA_TEXT_EXAMPLE = os.getenv("JIRA_PROJECT_CODE") + "-1234"
 
     LAUNCHPAD_GROUP = os.getenv("LAUNCHPAD_GROUP")
 
@@ -112,6 +144,7 @@ if __name__ == "__main__":
     logging.info("Initializing. Including remote resource connections.")
     results = []
     github = github_login(token=GITHUB_TOKEN)
+    jira = JIRA(JIRA_BASE_URL, basic_auth=(CANONICAL_EMAIL, JIRA_API_TOKEN))
     launchpad = Launchpad.login_with("warty", "production", version="devel")
 
     # GitHub repositories matching organisation and topic
@@ -147,11 +180,24 @@ if __name__ == "__main__":
     ]
     # equivalent to lp_result.is_complete
 
+    lp_projects = {}
+
     for lp_result in lp_group.searchTasks(status=not_complete):
-        _bug = lp_result.bug  # https://launchpad.net/+apidoc/devel.html#bug
+
+        _bug = lp_result.bug
+        _target = lp_result.target
+        _target_link = _target.web_link
+        if _target_link not in lp_projects:
+            lp_projects[_target_link] = repo_from_launchpad(_target)
+
+        lp_projects[_target_link].issues.append(issue_from_launchpad(_bug))
 
     # generate data object
-    data = {"repositories": sorted(results, key=lambda element: element.title)}
+    combined = results + list(lp_projects.values())
+    data = {
+        "jira_example": JIRA_TEXT_EXAMPLE,
+        "repositories": sorted(combined, key=lambda element: element.title),
+    }
 
     # publish reports
     logging.info("Publishing reports.")

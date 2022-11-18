@@ -4,21 +4,23 @@
 
 <h1>Open issues with a Jira reference</h1>
 
+<p>These issues have a Jira reference. Missing backlinks marked with 😢</p>
+
 <table style="width: 100%">
 
-{{#repositories}}
-    <tr><td colspan="3"><br /><h2>{{title}} <a href="{{path}}" style="text-decoration: none;">{{icon}}</a></h2></td></tr>
+    {{#repositories}}
+    <tr><td colspan="4"><br /><h2>{{title}} <a href="{{path}}" style="text-decoration: none;">{{icon}}</a></h2></td></tr>
 
     {{#issues_with_jira_youngest_first}}
     <tr>
         <td><a href="{{path}}">{{number}}</a></td>
-        <td>{{title}}</td>
-        <td>(<a href="{{jira_path}}">{{jira_number}}</a>)</td>
-        <td>{{age}}</td>
+        <td title="{{summary}}">{{title}}</td>
+        <td><a href="{{jira_path}}">{{jira}}</a>{{jira_backlink_icon}}</td>
+        <td style="white-space: nowrap;">{{age}}</td>
     </tr>
     {{/issues_with_jira_youngest_first}}
+    {{/repositories}}
 
-{{/repositories}}
 </table>
 
 </body>
