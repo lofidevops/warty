@@ -107,13 +107,15 @@ def repo_from_launchpad(lp_target):
 
 
 def issue_from_launchpad(lp_bug):
-    return ReportIssue(
+    issue = ReportIssue(
         title=lp_bug.title,
         number=str(lp_bug.id),
         summary=lp_bug.description,
         created=lp_bug.date_created,
         path=lp_bug.web_link,
     )
+    issue.populate_jira()
+    return issue
 
 
 def check_jira_backlink(jira_ref, source_link):
