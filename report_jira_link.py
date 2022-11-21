@@ -57,6 +57,8 @@ class ReportRepository(BaseModel):
             return "🐙"
         elif self.host == "launchpad":
             return "🚀"
+        elif self.host == "jira":
+            return "🚢"
         else:
             return "💾"
 
@@ -132,8 +134,9 @@ if __name__ == "__main__":
 
     JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
     JIRA_BASE_URL = os.getenv("JIRA_BASE_URL")
-    JIRA_TEXT_FILTER = os.getenv("JIRA_PROJECT_CODE") + "-*"
-    JIRA_TEXT_EXAMPLE = os.getenv("JIRA_PROJECT_CODE") + "-1234"
+    JIRA_PROJECT_CODE = os.getenv("JIRA_PROJECT_CODE")
+    JIRA_TEXT_FILTER = JIRA_PROJECT_CODE + "-*"
+    JIRA_TEXT_EXAMPLE = JIRA_PROJECT_CODE + "-1234"
 
     LAUNCHPAD_GROUP = os.getenv("LAUNCHPAD_GROUP")
 
@@ -192,8 +195,36 @@ if __name__ == "__main__":
 
         lp_projects[_target_link].issues.append(issue_from_launchpad(_bug))
 
+    logging.info("Processing Jira project issues.")
+    jira_project = ReportRepository(
+        host="jira", path=JIRA_BASE_URL + "/browse/" + JIRA_PROJECT_CODE, title="Jira"
+    )
+
+    # Jira issues within JIRA_PROJECT_CODE
+    jira_result = jira.search_issues(
+        f"project={JIRA_PROJECT_CODE} AND statusCategory in (2, 4) ORDER BY statusCategory DESC",
+        maxResults=-1,
+    )
+    for jira_issue in jira_result:
+        _description = str(jira_issue.fields.description)
+        all_links = fnmatch.filter(_description.split(), "https*")
+
+        if len(all_links) == 0:
+            continue
+
+        _issue = ReportIssue(
+            number=jira_issue.key,
+            path="",
+            summary=_description,
+            title=jira_issue.fields.summary,
+            created=datetime.datetime.strptime(jira_issue.fields.created, ""),
+            jira=jira_issue.key,
+            backlink=False,
+        )
+        jira_project.issues.append(_issue)
+
     # generate data object
-    combined = results + list(lp_projects.values())
+    combined = results + list(lp_projects.values()) + [jira_project]
     data = {
         "jira_example": JIRA_TEXT_EXAMPLE,
         "repositories": sorted(combined, key=lambda element: element.title),
