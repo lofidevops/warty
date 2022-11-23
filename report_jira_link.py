@@ -199,7 +199,7 @@ if __name__ == "__main__":
 
     logging.info("Processing Jira project issues.")
     jira_project = ReportRepository(
-        host="jira", path=JIRA_BASE_URL + "/browse/" + JIRA_PROJECT_CODE, title="Jira"
+        host="jira", path=JIRA_BASE_URL + "/browse/" + JIRA_PROJECT_CODE, title="jira"
     )
 
     # Jira issues within JIRA_PROJECT_CODE
