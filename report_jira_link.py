@@ -1,4 +1,8 @@
+# SPDX-FileCopyrightText: Copyright 2022 Canonical Ltd
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Generate a scary report of GH and LP tickets with no Jira references."""
+
 import datetime
 import fnmatch
 import logging

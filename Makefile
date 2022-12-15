@@ -1,5 +1,9 @@
+# SPDX-FileCopyrightText: Copyright 2022 Canonical Ltd
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 BOOT_TASKS = bootstrap pip-sync
 ENV = $(CURDIR)/.venv
+BIN = $(ENV)/bin
 PYTHON3 = $(ENV)/bin/python3
 PIP = $(ENV)/bin/pip
 PIP_COMPILE = $(ENV)/bin/pip-compile
@@ -16,6 +20,13 @@ clean:
 $(ENV):
 	virtualenv $(ENV) --python=python3
 	$(PIP) install pip-tools
+
+## lint	: Fix or warn about linting errors.
+lint:
+	$(BIN)/black .
+	$(BIN)/mdformat --number --wrap 79 .
+	$(BIN)/reuse lint
+	git diff --exit-code
 
 .PHONY: pip-compile
 pip-compile: $(ENV)

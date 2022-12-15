@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright 2022 Canonical Ltd
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import os
 import re
 from typing import Iterator, Tuple

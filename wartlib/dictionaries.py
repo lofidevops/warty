@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: Copyright 2022 Canonical Ltd
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+
 def flat_dictionary(nested: dict):
     flat = {}
     for key, value in nested.items():

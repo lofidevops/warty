@@ -1,9 +1,13 @@
+# SPDX-FileCopyrightText: Copyright 2022 Canonical Ltd
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 [project]
 name = "warty"
 version = "0.1.0"
-description = "Experimental code."
-authors = [{ name = "Canonical", email = "no-reply@canonical.com" }]
+description = "Run at your peril!"
+authors = [{ name = "Canonical Ltd", email = "no-reply@canonical.com" }]
 dependencies = [
+    "black",
     "beautifulsoup4",
     "chevron",
     "fabric",
@@ -14,8 +18,10 @@ dependencies = [
     "mdformat",
     "paramiko==2.8.1",  # FIXME: avoid DSA/RSA confusion (TODO: get URL)
     "pydantic",
+    "pymacaroons",
     "python-dotenv",
     "requests",
+    "reuse",
     "sh",
 ]
 requires-python = ">=3.10"
@@ -30,3 +36,15 @@ build-backend = "hatchling.build"
 [tool.black]
 line-length = 88
 skip-magic-trailing-comma = true
+
+[tool.syllabub.files]
+body = "static/body.md"
+logo = "static/logo.png"
+
+[tool.syllabub.project]
+conduct = "ubuntu-2.0"
+copyright = "Copyright 2022 Canonical Ltd"
+origin = "DCO-1.1-git-signoff"
+sbom = "reuse spdx"
+title = "Warty scripts 🐗"
+url = "https://github.com/lofidevops/warty"

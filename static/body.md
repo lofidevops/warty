@@ -1,7 +1,3 @@
-# Warty scripts 🐗
-
-Run at your peril!
-
 ## Development environment
 
 Initialise Python environment:
@@ -53,18 +49,3 @@ make run moin_convert.py
 cd working/commonmark
 ./postprocessing.sh
 ```
-
-# Copying
-
-Warty scripts 🐗 \
-<https://github.com/lofidevops/warty> \
-Copyright 2022 Canonical Ltd \
-SPDX-License-Identifier: GPL-3.0-or-later
-
-Shared under GPL-3.0-or-later. We adhere to the Ubuntu Code of Conduct 2.0, and
-certify origin per DCO 1.1 with a signed-off-by line. Contributions under the
-same terms are welcome.
-
-Submit security and conduct issues as private tickets. Sign commits with
-`git commit --signoff`. For a software bill of materials run `reuse spdx`. For
-more details see LICENSES, CONDUCT and DCO.
